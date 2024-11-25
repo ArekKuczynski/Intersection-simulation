@@ -44,7 +44,7 @@ class Roads():
         return start_point
 
     def get_road(self,position,end_point): # sprawdza na której jest drodze na podstawie współrzędnej
-        if position not in self.characteristic_points:    
+        if position not in self.characteristic_points:
             if position[1] == 250:
                 return 1
             elif position[1] == 240:
