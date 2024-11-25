@@ -9,7 +9,7 @@
 
 class Roads():
     def __init__(self,characteristic_points = None):
-        self.characteristic_points = characteristic_points
+        self.characteristic_points = self.get_characteristic_points()
 
     # automatyczne obliczanie punktów charakterystycznych
     def get_characteristic_points(self):
@@ -25,9 +25,9 @@ class Roads():
         #### WAŻNE : Przy losowaniu ( lub tutaj ) inta, trzeba brać pod uwagę 
         #### to, że jeśli zaczyna z np. (0,240) to end_point nie może być równy (0,250)
         #### bo nie uwzględniamy przypadku, gdy zawraca
-        
+         # dodać block na endpointy dla określonych start pointów ^^ 
         if number == 1: 
-            end_point = (300,250) # road_one
+            end_point = (0,250)   # road_one
         elif number == 2:
             end_point = (600,240) # road_two
         elif number == 3:
@@ -44,6 +44,7 @@ class Roads():
         return start_point
 
     def get_road(self,position,end_point): # sprawdza na której jest drodze na podstawie współrzędnej
+        # w sumie można to ustandaryzować dając za endpointy zmienne
         if position not in self.characteristic_points:
             if position[1] == 250:
                 return 1
@@ -56,22 +57,40 @@ class Roads():
             else:
                 return "Error"
         else:
-            if end_point[1] == 250:
-                return 1
-            elif end_point[1] == 240:
-                return 2
-            elif end_point[0] == 305:
-                return 4
-            else:
-                return "Error"
-        
-        ## Będzie trzeba też uwarunkować gdy np zaczyna w (600,250) i jedzie do (295,0)
-        ## żeby dobiero na drugim punkcie charakterystycznym, który napotka zmienił kierunek
-        ## można uwarunkować to, dając start_pointy do get_road albo ręcznie warunki na punktach charakterystycznych
-        
+            if position == (305,250):
+                if end_point == (0,250):
+                    return 1
+                elif end_point == (295,0):
+                   return 1
+                else:
+                    return "Nie powinno być tego end pointa, coś w warunkach blocka get_end_points jest źle" # wersja robocza 
+            if position == (295,250):
+                if end_point == (600,240):
+                    return 3
+                elif end_point == (0,250):
+                    return 1
+                else:
+                    return "Nie powinno być tego end pointa, coś w warunkach blocka get_end_points jest źle" # wersja robocza 
+            
+            if position == (295,240):
+                if end_point == (600,240):
+                    return 2
+                elif end_point == (295,0):
+                    return 3
+                else:
+                    return "Nie powinno być tego end pointa, coś w warunkach blocka get_end_points jest źle" # wersja robocza 
+                 
+            if position == (305,240):
+                if end_point == (600,240):
+                    return 2
+                elif end_point == (0,250):
+                    return 4
+                else:
+                    return "Nie powinno być tego end pointa, coś w warunkach blocka get_end_points jest źle" # wersja robocza     
 
     # obliczanie dalszych współrzędznych 
-
+    # jeszcze nwm, może być to wcale nie potrzebne 
+    # vvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvvv
 
     def road_one():
         # y = 250   
