@@ -11,9 +11,12 @@ from roads import Roads
 def build_cars(cars_num: int, velocity: int, length: int) -> None:
     """Build cars objects in the SimData cars list"""
     for num in range(cars_num):
+        random.ra
         rand_road = random.randint(1,3)
+        start_pos = roads.get_start_points(rand_road)
 
-        start_pos = roads.get_start_points(2)
+        # rand_road = random.randint(1,3)
+        # end_point = roads.get_end_points()
         car = Car(f"C{num}",start_pos, velocity, length)
         sim_data.cars.append(car)
 
@@ -36,9 +39,6 @@ def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
             car.move(road)
             print(f"car_id:{car.id}, pos: (x={car.x}, y={car.y})") if debug else 0
 
-        # print("Cars:",sim_data.cars) if debug else 0
-
-
         log_file.writelines(f"{iter}: {curent_cars_pos}\n")
         if iter == max_iter:
             break
@@ -55,12 +55,10 @@ if __name__ == "__main__":
 
     sim_data = SimData()
     roads = Roads()
-    roads.get_characteristic_points() # na razie ustawiamy tutaj
 
     build_cars(cars_num, velocity, length)
 
     # Symulacja:
     sim_data.time_step = 0.5
-    simulation(sim_data.time_step, debug=True, max_iter=10)
-
+    simulation(sim_data.time_step, debug=True, max_iter=300)
 

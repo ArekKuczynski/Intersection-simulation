@@ -25,7 +25,8 @@ class Roads():
         #### WAŻNE : Przy losowaniu ( lub tutaj ) inta, trzeba brać pod uwagę 
         #### to, że jeśli zaczyna z np. (0,240) to end_point nie może być równy (0,250)
         #### bo nie uwzględniamy przypadku, gdy zawraca
-         # dodać block na endpointy dla określonych start pointów ^^ 
+        # dodać block na endpointy dla określonych start pointów ^^ 
+        # aby pozbyć się poziomu ifów można endpointy dać do listy i usuwac jeden w zaelżności od startpointa 
         if number == 1: 
             end_point = (0,250)   # road_one
         elif number == 2:

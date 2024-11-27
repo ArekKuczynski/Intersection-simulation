@@ -15,11 +15,12 @@ class Car():
             if len(self.sim_data.cars) == 1:
                 self.started = True
             else:
-                for car in self.sim_data.cars:
-                    while car.id <= self.id:
-                        if car.x != self.x: # zmienić na nierówność uzwzgędniającą długości samochodu i dopisać przypadek dla 1 samochodu
-                            self.started = True
-                        break
+                self.started = True
+                # for car in self.sim_data.cars:
+                #     while car.id <= self.id:
+                #         if car.x != self.x: # zmienić na nierówność uzwzgędniającą długości samochodu i dopisać przypadek dla 1 samochodu
+                #             self.started = True
+                #         break
 
     def moving_forward(self, number: int) -> None:
         """Method for moving forward. Don't use in main.py"""

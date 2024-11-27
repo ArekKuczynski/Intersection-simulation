@@ -1,5 +1,7 @@
 import matplotlib.pyplot as plt
 
+# jak wyłaczamy to wyłączamy
+
 def visualization(file_path):
     with open(file_path, 'r') as file:
         lines = file.readlines()
@@ -32,7 +34,7 @@ def visualization(file_path):
         # Wyświetlanie legendy
         plt.legend(loc='upper left')
 
-        plt.pause(0.1) # pauza w sekundach po każdej iteracji
+        plt.pause(0.1) # sprawdzic dla czego szybkosc sie nie zmienia
 
     plt.show()
 
