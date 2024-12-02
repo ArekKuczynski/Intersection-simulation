@@ -19,20 +19,20 @@ class Car():
         if not self.started:
             if len(self.sim_data.cars) == 1:
                 self.started = True
-            if (self.x, self.y) == self.starting_position:
+            elif (self.x, self.y) == self.starting_position:
                 self.started = True
                 for car in self.sim_data.cars:
-                    while car.id <= self.id:  # przy znalezieniu 1 auta, które blokuje wjazd pętla jest przerywana
+                    if car.id != self.id:  # przy znalezieniu 1 auta, które blokuje wjazd pętla jest przerywana
                         if road == 1:
-                            if (self.x - self.length) >= car.x and car.y == self.y:
+                            if ((self.x - self.length - 4) <= car.x and car.started) and car.y == self.y: # temp: 4
                                 self.started = False
                                 break
                         elif road == 2:
-                            if (self.x + self.length) <= car.x and car.y == self.y:
+                            if ((self.x + self.length + 4) >= car.x and car.started) and car.y == self.y: # temp: 4
                                 self.started = False
                                 break
                         elif road == 4:
-                            if (self.y + self.length) >= car.y and car.x == self.x:
+                            if ((self.y + self.length + 4) >= car.y and car.started) and car.x == self.x: # temp: 4
                                 self.started = False
                                 break
 
@@ -90,7 +90,7 @@ class Car():
 
     def turning_off_engine(self) -> None:
         """Method for turning off the car's engine"""
-        self.started = False
+        #self.started = False
 
     def move(self, number_of_road: int, characteristic_points: list) -> None:
         """Method used only in main.py"""
@@ -118,7 +118,3 @@ class Car():
                 self.moving_forward(
                     number_of_road, characteristic_points, False)
 
-    def test(self):
-        sim_data = SimData()
-        sim_data.cars.append("xdCar")
-        print(sim_data.cars)

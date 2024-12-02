@@ -11,13 +11,16 @@ from roads import Roads
 def build_cars(cars_num: int, velocity: int, length: int) -> None:
     """Build cars objects in the SimData cars list"""
     for num in range(cars_num):
-        random.ra
-        rand_road = random.randint(1,3)
-        start_pos = roads.get_start_points(rand_road)
+        possible_roads = [1, 2, 3]
 
-        # rand_road = random.randint(1,3)
-        # end_point = roads.get_end_points()
-        car = Car(f"C{num}",start_pos, velocity, length)
+        rand_road = random.choice(possible_roads)
+        start_pos = roads.get_start_points(rand_road)
+        possible_roads.remove(rand_road)
+
+        rand_road = random.choice(possible_roads)
+        end_point = roads.get_end_points(rand_road)
+
+        car = Car(f"C{num}",start_pos, end_point, velocity, length)
         sim_data.cars.append(car)
 
 def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
@@ -29,14 +32,15 @@ def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
     while True:
         print(f"\n\n\n=== ITER:{iter} ===")
         curent_cars_pos = []
+
         for car in sim_data.cars:
             curent_cars_pos.append((car.x, car.y))
-            car.start_engine()
-            
-            road = roads.get_road((car.x, car.y), None) # na razie None
+            road = roads.get_road((car.x, car.y), car.end_position) # na razie None
             print(f"car_id:{car.id}, road: {road}") if debug else 0
 
-            car.move(road)
+            car.start_engine(road)
+
+            car.move(road, roads.characteristic_points)
             print(f"car_id:{car.id}, pos: (x={car.x}, y={car.y})") if debug else 0
 
         log_file.writelines(f"{iter}: {curent_cars_pos}\n")
@@ -48,10 +52,10 @@ def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
     log_file.close()
 
 if __name__ == "__main__":
-    print("Podaj wartości początkowe:")
-    cars_num = int(input("Podaj liczbe aut w symulacji:"))
-    velocity = int(input("Prędkość samochodu:"))
-    length = int(input("Długość samochodu:"))
+    print("-- Podaj wartości początkowe: ---")
+    cars_num = int(input("1. Podaj liczbe aut w symulacji: "))
+    velocity = int(input("2. Prędkość samochodu: "))
+    length = int(input("3. Długość samochodu: "))
 
     sim_data = SimData()
     roads = Roads()
