@@ -1,7 +1,5 @@
 import matplotlib.pyplot as plt
 
-# jak wyłaczamy to wyłączamy
-
 def visualization(file_path):
     with open(file_path, 'r') as file:
         lines = file.readlines()
@@ -12,31 +10,30 @@ def visualization(file_path):
         points = eval(values)
         iterations.append(points)
 
-    plt.figure(figsize=(14, 8))  
+    fig, ax = plt.subplots(figsize=(14, 8))  
+
+    ax.set_xlim(0, 600)
+    ax.set_ylim(0, 400)
 
     for i, points in enumerate(iterations):
-       
-        plt.cla() # czyszczenie po każdej iteracji
-        plt.xlim(0, 600)
-        plt.ylim(0, 400)
-        plt.title(f'Wizualizacja symulacji - Iteracja {i + 1}')
+        ax.cla()  # Czyszczenie bieżącej osi
 
-        plt.axhline(y=250, color='red', linestyle='--', label='y = 250')  # Funkcja y = 250
-        plt.axhline(y=240, color='blue', linestyle='--', label='y = 240')  # Funkcja y = 240
-        plt.axvline(x=295, color='green', linestyle='--', label='x = 295')  # Funkcja x = 295
-        plt.axvline(x=305, color='purple', linestyle='--', label='x = 305')  # Funkcja x = 305
+        ax.set_xlim(0, 600)
+        ax.set_ylim(0, 400)
+        ax.set_title(f'Wizualizacja symulacji - Iteracja {i + 1}')
 
-        for x,y in points:
-            plt.scatter(x, y, color='black') # rysowanie punktu
-            
-        
-        
-        # Wyświetlanie legendy
-        plt.legend(loc='upper left')
+        ax.axhline(y=250, color='red', linestyle='--', label='y = 250')
+        ax.axhline(y=240, color='blue', linestyle='--', label='y = 240')
+        ax.axvline(x=295, color='green', linestyle='--', label='x = 295')
+        ax.axvline(x=305, color='purple', linestyle='--', label='x = 305')
 
-        plt.pause(0.1) # sprawdzic dla czego szybkosc sie nie zmienia
+        for x, y in points:
+            ax.scatter(x, y, color='black')
+
+        ax.legend(loc='upper left')
+
+        plt.pause(0.0000001) # nie da się krócej
 
     plt.show()
-
 
 visualization('logs.txt')
