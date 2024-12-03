@@ -12,13 +12,15 @@ def build_cars(cars_num: int, velocity: int, length: int) -> None:
     """Build cars objects in the SimData cars list"""
     for num in range(cars_num):
         possible_roads = [1, 2, 3]
+        endpoints = [0,1] # dodane 
 
         rand_road = random.choice(possible_roads)
+        rand_endpoints = random.choice(endpoints) # dodane
         start_pos = roads.get_start_points(rand_road)
-        possible_roads.remove(rand_road)
+        possible_roads.remove(rand_road) 
 
         rand_road = random.choice(possible_roads)
-        end_point = roads.get_end_points(rand_road)
+        end_point = roads.get_end_points(rand_endpoints,start_pos) # zmienione
 
         car = Car(f"C{num}",start_pos, end_point, velocity, length)
         sim_data.cars.append(car)
