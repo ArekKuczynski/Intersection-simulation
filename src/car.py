@@ -67,7 +67,7 @@ class Car():
             if self.y <= self.end_position[1]:
                 self.turning_off_engine()
 
-        else:  # brak możliwości wyłączenia silnika, ponieważ koniec jest na przecięciu dróg
+        elif number == 4:  # brak możliwości wyłączenia silnika, ponieważ koniec jest na przecięciu dróg
             if stop:
                 if (self.x, self.y) == points[3]:
                     self.y += self.velocity * self.sim_data.time_step
