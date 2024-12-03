@@ -43,7 +43,7 @@ class Car():
                 self.turning_off_engine()
 
             if stop:
-                if self.x - self.velocity * self.sim_data.time_step < points[0][0]:
+                if (self.x - self.velocity * self.sim_data.time_step < points[0][0]) and (self.x, self.y != points[0]):
                     self.x, self.y = points[0]
                 else:
                     self.x -= self.velocity * self.sim_data.time_step
@@ -51,12 +51,11 @@ class Car():
                 self.x -= self.velocity * self.sim_data.time_step
 
         elif number == 2:
-            self.x += self.velocity * self.sim_data.time_step
             if self.x >= self.end_position[0]:
                 self.turning_off_engine()
 
             if stop:
-                if self.x + self.velocity * self.sim_data.time_step > points[2][0]:
+                if (self.x + self.velocity * self.sim_data.time_step > points[2][0]) and (self.x, self.y != points[2]):
                     self.x, self.y = points[2]
                 else:
                     self.x += self.velocity * self.sim_data.time_step
@@ -78,7 +77,10 @@ class Car():
                     else:
                         self.y += self.velocity * self.sim_data.time_step
             else:
-                self.y += self.velocity * self.sim_data.time_step
+                if (self.x, self.y) != points[1] and (self.x, self.y) != points[0]:
+                    self.y += self.velocity * self.sim_data.time_step
+                else:
+                    self.x -= self.velocity * self.sim_data.time_step
 
     def turning_right(self) -> None:
         """Method for turning right. Don't use in main.py"""
@@ -100,19 +102,19 @@ class Car():
             if self.end_position[1] != self.y:
                 self.moving_forward(
                     number_of_road, characteristic_points, True)
-                if (self.x, self.y) == characteristic_points[0]:
-                    self.turning_left()
-                elif (self.x, self.y) == characteristic_points[2]:
-                    self.turning_right()
+                # if (self.x, self.y) == characteristic_points[0]:
+                #     self.turning_left()
+                # elif (self.x, self.y) == characteristic_points[2]:
+                #     self.turning_right()
 
             # jeżeli musi skręcić z drogi 4 na drogę 1 lub 2
-            elif self.end_position[0] != self.x:
-                self.moving_forward(
-                    number_of_road, characteristic_points, True)
-                if (self.x, self.y) == characteristic_points[1]:
-                    self.turning_left()
-                elif (self.x, self.y) == characteristic_points[3] and self.end_position[0] == self.x:
-                    self.turning_right()
+            # elif self.end_position[0] != self.x:
+            #     self.moving_forward(
+            #         number_of_road, characteristic_points, True)
+            #     if (self.x, self.y) == characteristic_points[1]:
+            #         self.turning_left()
+            #     elif (self.x, self.y) == characteristic_points[3] and self.end_position[0] == self.x:
+            #         self.turning_right()
 
             else:
                 self.moving_forward(
