@@ -21,18 +21,18 @@ class Roads():
             ]
         return self.characteristic_points
     
-    def get_end_points(self, number: int):
+    def get_end_points(self, number: int,start_point):
         #### WAŻNE : Przy losowaniu ( lub tutaj ) inta, trzeba brać pod uwagę 
         #### to, że jeśli zaczyna z np. (0,240) to end_point nie może być równy (0,250)
         #### bo nie uwzględniamy przypadku, gdy zawraca
         # dodać block na endpointy dla określonych start pointów ^^ 
         # aby pozbyć się poziomu ifów można endpointy dać do listy i usuwac jeden w zaelżności od startpointa 
-        if number == 1: 
-            end_point = (0,250)   # road_one
-        elif number == 2:
-            end_point = (600,240) # road_two
-        elif number == 3:
-            end_point = (295,0)   # road_three
+        if start_point == (600,250): 
+            end_point = [(0,250),(295,0)][number]   
+        elif start_point == (0,240):
+            end_point = [(600,240),(295,0)][number] 
+        elif start_point == (305,0):
+            end_point = [(0,250),(600,240)][number]   
         return end_point
     
     def get_start_points(self, number: int):
@@ -66,7 +66,7 @@ class Roads():
                 else:
                     return "Nie powinno być tego end pointa, coś w warunkach blocka get_end_points jest źle" # wersja robocza 
             if position == (295,250):
-                if end_point == (600,240):
+                if end_point == (295,0):
                     return 3
                 elif end_point == (0,250):
                     return 1
