@@ -1,3 +1,5 @@
+import random
+
 from data import SimData
 
 
@@ -24,15 +26,15 @@ class Car():
                 for car in self.sim_data.cars:
                     if car.id != self.id:  # przy znalezieniu 1 auta, które blokuje wjazd pętla jest przerywana
                         if road == 1:
-                            if ((self.x - self.length - 4) <= car.x and car.started) and car.y == self.y: # temp: 4
+                            if ((self.x - self.length - random.uniform(4, 16)) <= car.x and car.started) and car.y == self.y:
                                 self.started = False
                                 break
                         elif road == 2:
-                            if ((self.x + self.length + 4) >= car.x and car.started) and car.y == self.y: # temp: 4
+                            if ((self.x + self.length + random.uniform(4, 16)) >= car.x and car.started) and car.y == self.y:
                                 self.started = False
                                 break
                         elif road == 4:
-                            if ((self.y + self.length + 4) >= car.y and car.started) and car.x == self.x: # temp: 4
+                            if ((self.y + self.length + random.uniform(4, 16)) >= car.y and car.started) and car.x == self.x:
                                 self.started = False
                                 break
 
@@ -72,10 +74,13 @@ class Car():
                 if (self.x, self.y) == points[3]:
                     self.y += self.velocity * self.sim_data.time_step
                 else:
-                    if self.y + self.velocity * self.sim_data.time_step > points[1][1]:
+                    if self.y + self.velocity * self.sim_data.time_step > points[3][1] and self.y <= points[3][1]:
+                        self.x, self.y = points[3]
+                    elif self.y + self.velocity * self.sim_data.time_step > points[1][1]:
                         self.x, self.y = points[1]
                     else:
                         self.y += self.velocity * self.sim_data.time_step
+
             else:
                 if (self.x, self.y) != points[1] and (self.x, self.y) != points[0]:
                     self.y += self.velocity * self.sim_data.time_step
@@ -96,7 +101,6 @@ class Car():
 
     def move(self, number_of_road: int, characteristic_points: list) -> None:
         """Method used only in main.py"""
-        print(self.started)
         if self.started:
             # jeżeli musi skręcić z drogi 1 lub 2 na drogę 3
             if self.end_position[1] != self.y:

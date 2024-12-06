@@ -44,7 +44,7 @@ class Roads():
             start_point = (305,0)  # road_four
         return start_point
 
-    def get_road(self,position,end_point): # sprawdza na której jest drodze na podstawie współrzędnej
+    def get_road(self, position: tuple, end_point: tuple): # sprawdza na której jest drodze na podstawie współrzędnej
         # w sumie można to ustandaryzować dając za endpointy zmienne
         if position not in self.characteristic_points:
             if position[1] == 250:
@@ -87,7 +87,7 @@ class Roads():
                 elif end_point == (0,250):
                     return 4
                 else:
-                    return "Nie powinno być tego end pointa, coś w warunkach blocka get_end_points jest źle" # wersja robocza     
+                    return "Nie powinno być tego end pointa, coś w warunkach blocka get_end_points jest źle" # wersja robocza
 
     # obliczanie dalszych współrzędznych 
     # jeszcze nwm, może być to wcale nie potrzebne 

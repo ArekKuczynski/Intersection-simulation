@@ -12,15 +12,13 @@ def build_cars(cars_num: int, velocity: int, length: int) -> None:
     """Build cars objects in the SimData cars list"""
     for num in range(cars_num):
         possible_roads = [1, 2, 3]
-        endpoints = [0,1] # dodane 
+        endpoints = [0,1]
 
         rand_road = random.choice(possible_roads)
-        rand_endpoints = random.choice(endpoints) # dodane
+        rand_endpoints = random.choice(endpoints)
+
         start_pos = roads.get_start_points(rand_road)
-        possible_roads.remove(rand_road) 
-
-        rand_road = random.choice(possible_roads)
-        end_point = roads.get_end_points(rand_endpoints,start_pos) # zmienione
+        end_point = roads.get_end_points(rand_endpoints,start_pos)
 
         car = Car(f"C{num}",start_pos, end_point, velocity, length)
         sim_data.cars.append(car)
@@ -31,19 +29,20 @@ def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
     log_file = open(log_file_path, "w")
 
     iter = 0
-    while True:
+    while len(sim_data.cars) != 0:
         print(f"\n\n\n=== ITER:{iter} ===")
         curent_cars_pos = []
 
         for car in sim_data.cars:
             curent_cars_pos.append((car.x, car.y))
-            road = roads.get_road((car.x, car.y), car.end_position) # na razie None
+            road = roads.get_road((car.x, car.y), car.end_position)
             print(f"car_id:{car.id}, road: {road}") if debug else 0
 
             car.start_engine(road)
+            print(f"car_engine: {car.started}")
 
             car.move(road, roads.characteristic_points)
-            print(f"car_id:{car.id}, pos: (x={car.x}, y={car.y})") if debug else 0
+            print(f"car_id:{car.id}, pos: (x={car.x}, y={car.y}), end_point: {car.end_position}") if debug else 0
 
         log_file.writelines(f"{iter}: {curent_cars_pos}\n")
         if iter == max_iter:
