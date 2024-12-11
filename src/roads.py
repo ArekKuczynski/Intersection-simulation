@@ -7,6 +7,13 @@
 #                     ^    ^
 #             road_three  road_four                 
 
+
+#                   Obszary
+#                 ----1 2----
+#                 ----3 4----
+#                     | |
+#                     | |
+
 class Roads():
     def __init__(self,characteristic_points = None):
         self.characteristic_points = self.get_characteristic_points()
@@ -22,11 +29,6 @@ class Roads():
         return self.characteristic_points
     
     def get_end_points(self, number: int,start_point):
-        #### WAŻNE : Przy losowaniu ( lub tutaj ) inta, trzeba brać pod uwagę 
-        #### to, że jeśli zaczyna z np. (0,240) to end_point nie może być równy (0,250)
-        #### bo nie uwzględniamy przypadku, gdy zawraca
-        # dodać block na endpointy dla określonych start pointów ^^ 
-        # aby pozbyć się poziomu ifów można endpointy dać do listy i usuwac jeden w zaelżności od startpointa 
         if start_point == (600,250): 
             end_point = [(0,250),(295,0)][number]   
         elif start_point == (0,240):
@@ -43,6 +45,18 @@ class Roads():
         elif number == 3:
             start_point = (305,0)  # road_four
         return start_point
+    
+    def get_area(self,position):
+        x = position[0]
+        y = position[1]
+        if (x > 295 and x < 300) and (y < 250 and y > 245): 
+            return 1
+        if (x > 295 and x < 300) and (y < 245 and y > 240): 
+            return 2
+        if (x < 305 and x > 300) and (y < 240 and y < 245): 
+            return 3
+        if (x > 305 and x < 300) and (y < 250 and y > 245): 
+            return 4
 
     def get_road(self, position: tuple, end_point: tuple): # sprawdza na której jest drodze na podstawie współrzędnej
         # w sumie można to ustandaryzować dając za endpointy zmienne
