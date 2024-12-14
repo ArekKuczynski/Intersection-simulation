@@ -43,6 +43,10 @@ def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
 
             car.move(road, roads.characteristic_points)
             print(f"car_id:{car.id}, pos: (x={car.x}, y={car.y}), end_point: {car.end_position}") if debug else 0
+            
+            if car.started == False and (car.x, car.y) != car.starting_position:
+                sim_data.cars.remove(car)
+                del(car)
 
         log_file.writelines(f"{iter}: {curent_cars_pos}\n")
         if iter == max_iter:
@@ -55,8 +59,23 @@ def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
 if __name__ == "__main__":
     print("-- Podaj wartości początkowe: ---")
     cars_num = int(input("1. Podaj liczbe aut w symulacji: "))
-    velocity = int(input("2. Prędkość samochodu: "))
-    length = int(input("3. Długość samochodu: "))
+    while True:
+        velocity = int(input("2. Prędkość samochodu: "))
+        if velocity > 9:
+            print("Prędkość nie może przekraczać 9 metrów na sekundę!")
+        elif velocity < 2:
+            print("Długość nie może być mniejsza niż 2 metry na sekundę!")
+        else:
+            break
+    
+    while True:
+        length = int(input("3. Długość samochodu: "))
+        if length > 9:
+            print("Długość nie może przekraczać 9 metrów!")
+        elif length < 2:
+            print("Długość nie może być mniejsza niż 2 metry!")
+        else:
+            break
 
     sim_data = SimData()
     roads = Roads()
@@ -65,5 +84,5 @@ if __name__ == "__main__":
 
     # Symulacja:
     sim_data.time_step = 0.5
-    simulation(sim_data.time_step, debug=True, max_iter=300)
+    simulation(sim_data.time_step, debug=True)
 

@@ -3,6 +3,7 @@ class SimData(object):
     _instance = None
     _cars = []
     _time_step = 1
+    _areas = {1: False, 2: False, 3: False, 4: False}
 
     def __new__(cls):
         if not cls._instance:
@@ -24,6 +25,14 @@ class SimData(object):
     @time_step.setter
     def time_step(self, value):
         self._time_step = value
+
+    @property
+    def areas(self):
+        return self._areas
+
+    @time_step.setter
+    def areas(self, value):
+        self._areas = value
 
     @staticmethod
     def reset_params() -> None:

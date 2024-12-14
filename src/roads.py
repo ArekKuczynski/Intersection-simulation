@@ -30,11 +30,11 @@ class Roads():
     
     def get_end_points(self, number: int,start_point):
         if start_point == (600,250): 
-            end_point = [(0,250),(295,0)][number]   
+            end_point = [(0,250),(295,0)][number]
         elif start_point == (0,240):
-            end_point = [(600,240),(295,0)][number] 
+            end_point = [(600,240),(295,0)][number]
         elif start_point == (305,0):
-            end_point = [(0,250),(600,240)][number]   
+            end_point = [(0,250),(600,240)][number]
         return end_point
     
     def get_start_points(self, number: int):
@@ -46,17 +46,19 @@ class Roads():
             start_point = (305,0)  # road_four
         return start_point
     
-    def get_area(self,position):
+    def get_area(self, position: tuple) -> int:
         x = position[0]
         y = position[1]
-        if (x > 295 and x < 300) and (y < 250 and y > 245): 
+        if (x > 290 and x < 300) and (y < 255 and y > 245): 
             return 1
-        if (x > 295 and x < 300) and (y < 245 and y > 240): 
+        if (x > 300 and x < 310) and (y < 255 and y > 245): 
             return 2
-        if (x < 305 and x > 300) and (y < 240 and y < 245): 
+        if (x > 290 and x < 300) and (y < 245 and y > 235): 
             return 3
-        if (x > 305 and x < 300) and (y < 250 and y > 245): 
+        if (x > 300 and x < 310) and (y < 245 and y > 235): 
             return 4
+        else:
+            return -1
 
     def get_road(self, position: tuple, end_point: tuple): # sprawdza na której jest drodze na podstawie współrzędnej
         # w sumie można to ustandaryzować dając za endpointy zmienne

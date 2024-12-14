@@ -43,43 +43,56 @@ class Car():
         if number == 1:
             if self.x <= self.end_position[0]:
                 self.turning_off_engine()
+                return None
 
             if stop:
-                if (self.x - self.velocity * self.sim_data.time_step < points[0][0]) and (self.x, self.y != points[0]):
+                if (self.x - self.velocity * self.sim_data.time_step < points[0][0]) and (self.x > points[0][0]):
                     self.x, self.y = points[0]
+                elif (self.x - self.velocity * self.sim_data.time_step < points[1][0]) and (self.x > points[1][0]):
+                    self.x, self.y = points[1]
+                elif (self.x + self.velocity * self.sim_data.time_step < points[1][0] + 5) and (self.x > points[1][0] + 5):
+                    self.x, self.y = points[1][0] + 5, points[1][1]
                 else:
                     self.x -= self.velocity * self.sim_data.time_step
+
             else:
                 self.x -= self.velocity * self.sim_data.time_step
 
         elif number == 2:
             if self.x >= self.end_position[0]:
                 self.turning_off_engine()
+                return None
 
             if stop:
-                if (self.x + self.velocity * self.sim_data.time_step > points[2][0]) and (self.x, self.y != points[2]):
+                if (self.x + self.velocity * self.sim_data.time_step > points[3][0]) and (self.x < points[3][0]):
+                    self.x, self.y = points[3]
+                elif (self.x + self.velocity * self.sim_data.time_step > points[2][0]) and (self.x < points[2][0]):
                     self.x, self.y = points[2]
+                elif (self.x + self.velocity * self.sim_data.time_step > points[2][0] - 5) and (self.x < points[2][0] - 5):
+                    self.x, self.y = points[2][0] - 5, points[2][1]
                 else:
                     self.x += self.velocity * self.sim_data.time_step
+
             else:
                 self.x += self.velocity * self.sim_data.time_step
 
         elif number == 3:
-            self.y -= self.velocity * self.sim_data.time_step
             if self.y <= self.end_position[1]:
                 self.turning_off_engine()
+                return None
+
+            self.y -= self.velocity * self.sim_data.time_step
 
         elif number == 4:  # brak możliwości wyłączenia silnika, ponieważ koniec jest na przecięciu dróg
             if stop:
-                if (self.x, self.y) == points[3]:
-                    self.y += self.velocity * self.sim_data.time_step
+                if (self.y + self.velocity * self.sim_data.time_step > points[1][1]) and (self.y < points[1][1]):
+                    self.x, self.y = points[1]
+                elif (self.y + self.velocity * self.sim_data.time_step > points[3][1]) and (self.y < points[3][1]):
+                    self.x, self.y = points[3]
+                elif (self.y + self.velocity * self.sim_data.time_step > points[3][1] - 5) and (self.y < points[3][1] - 5):
+                    self.x, self.y = points[3][0], points[3][1] - 5
                 else:
-                    if self.y + self.velocity * self.sim_data.time_step > points[3][1] and self.y <= points[3][1]:
-                        self.x, self.y = points[3]
-                    elif self.y + self.velocity * self.sim_data.time_step > points[1][1]:
-                        self.x, self.y = points[1]
-                    else:
-                        self.y += self.velocity * self.sim_data.time_step
+                    self.y += self.velocity * self.sim_data.time_step
 
             else:
                 if (self.x, self.y) != points[1] and (self.x, self.y) != points[0]:
@@ -97,7 +110,7 @@ class Car():
 
     def turning_off_engine(self) -> None:
         """Method for turning off the car's engine"""
-        #self.started = False
+        self.started = False
 
     def move(self, number_of_road: int, characteristic_points: list) -> None:
         """Method used only in main.py"""
