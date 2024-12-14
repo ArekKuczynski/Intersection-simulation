@@ -34,9 +34,10 @@ def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
         curent_cars_pos = []
 
         for car in sim_data.cars:
-            curent_cars_pos.append((car.x, car.y))
+            if car.started == True:
+                curent_cars_pos.append((round(car.x, 2), round(car.y, 2)))
             road = roads.get_road((car.x, car.y), car.end_position)
-            print(f"car_id:{car.id}, road: {road}") if debug else 0
+            print(f"\t-> car_id:{car.id}, road: {road}") if debug else 0
 
             car.start_engine(road)
             print(f"car_engine: {car.started}")
