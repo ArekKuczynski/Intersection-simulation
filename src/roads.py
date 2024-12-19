@@ -49,13 +49,13 @@ class Roads():
     def get_area(self, position: tuple) -> int:
         x = position[0]
         y = position[1]
-        if (x > 290 and x < 300) and (y < 255 and y > 245): 
+        if (x > 295 and x < 300) and (y < 255 and y > 245):  # ZMIANA w pierwszym warunku z x=290 na x=295
             return 1
-        if (x > 300 and x < 310) and (y < 255 and y > 245): 
+        if (x >= 300 and x < 310) and (y < 255 and y >= 245): 
             return 2
-        if (x > 290 and x < 300) and (y < 245 and y > 235): 
+        if (x > 290 and x <= 300) and (y <= 245 and y >= 240):  # ZMIANA w drugim warunku z y=235 na y=240
             return 3
-        if (x > 300 and x < 310) and (y < 245 and y > 235): 
+        if (x > 300 and x < 305) and (y < 245 and y > 235):  # ZMIANA w pierwszym warunku z x=310 na x=305
             return 4
         else:
             return -1

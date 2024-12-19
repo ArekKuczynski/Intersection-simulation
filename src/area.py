@@ -10,7 +10,7 @@ class Area():
         self.a = a
     
     # zakłdam, że dwa samochody nie wjadą w tym samym momencie na obszar
-    def status(self,get_area_list):
+    def check_status(self, get_area_list: list):  # ZMIANA NAZWY, bo traktowało self.status w return jako wywołanie funkcji
         if self.a in get_area_list:
             self.status = 1
             return self.status

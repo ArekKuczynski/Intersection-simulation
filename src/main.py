@@ -5,7 +5,9 @@ import math
 
 from data import SimData
 from car import Car
+from preference import checking_preference
 from roads import Roads
+from area import Area
 
 
 def build_cars(cars_num: int, velocity: int, length: int) -> None:
@@ -29,6 +31,7 @@ def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
     log_file = open(log_file_path, "w")
 
     iter = 0
+    areas = [Area(a) for a in range(1, 5)] # DODANA LISTA OBSZARÓW
     while len(sim_data.cars) != 0:
         print(f"\n\n\n=== ITER:{iter} ===")
         curent_cars_pos = []
@@ -42,13 +45,20 @@ def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
             car.start_engine(road)
             print(f"car_engine: {car.started}")
 
-            car.move(road, roads.characteristic_points)
+            area_list = [roads.get_area((c.x, c.y)) for c in sim_data.cars]
+            for area in areas:
+                area.check_status(area_list)
+
+            current_area = roads.get_area((car.x, car.y))
+            if checking_preference(car, areas, current_area):
+                car.move(road, roads.characteristic_points)
             print(f"car_id:{car.id}, pos: (x={car.x}, y={car.y}), end_point: {car.end_position}") if debug else 0
             
             if car.started == False and (car.x, car.y) != car.starting_position:
                 sim_data.cars.remove(car)
                 del(car)
 
+        print(f"area1: {areas[0].status}, area2: {areas[1].status}, area3: {areas[2].status}, area4: {areas[3].status}")
         log_file.writelines(f"{iter}: {curent_cars_pos}\n")
         if iter == max_iter:
             break
