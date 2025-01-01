@@ -32,7 +32,7 @@ def visualization(file_path):
 
         ax.legend(loc='upper left')
 
-        plt.pause(0.0000001) # nie da się krócej ( do sprawdzenia )
+        plt.pause(0.0000001) # nie da się krócej ( do sprawdzenia ) 
 
     plt.show()
 
