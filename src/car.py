@@ -99,7 +99,6 @@ class Car():
                 self.turning_off_engine()
                 return None
 
-            #if stop:
             if (self.x - self.velocity * self.sim_data.time_step < points[0][0]) and (self.x > points[0][0]):
                 self.x, self.y = points[0]
             elif (self.x - self.velocity * self.sim_data.time_step < points[1][0]) and (self.x > points[1][0]):
@@ -109,15 +108,12 @@ class Car():
             else:
                 self.x -= self.distance_to_go(0, "decreases")
 
-            # else:
-            #     self.x -= self.velocity * self.sim_data.time_step
 
         elif number == 2:
             if self.x >= self.end_position[0]:
                 self.turning_off_engine()
                 return None
 
-            #if stop:
             if (self.x + self.velocity * self.sim_data.time_step > points[3][0]) and (self.x < points[3][0]):
                 self.x, self.y = points[3]
             elif (self.x + self.velocity * self.sim_data.time_step > points[2][0]) and (self.x < points[2][0]):
@@ -126,9 +122,6 @@ class Car():
                 self.x, self.y = points[2][0] - 5, points[2][1]
             else:
                 self.x += self.distance_to_go(0, "growing")
-
-            # else:
-            #     self.x += self.velocity * self.sim_data.time_step
 
         elif number == 3:
             if self.y <= self.end_position[1]:
@@ -141,7 +134,6 @@ class Car():
                 self.y -= self.distance_to_go(1, "decreases")
 
         elif number == 4:  # brak możliwości wyłączenia silnika, ponieważ koniec jest na przecięciu dróg
-            #if stop:
             if (self.y + self.velocity * self.sim_data.time_step > points[1][1]) and (self.y < points[1][1]):
                 self.x, self.y = points[1]
             elif (self.y + self.velocity * self.sim_data.time_step > points[3][1]) and (self.y < points[3][1]):
@@ -151,28 +143,32 @@ class Car():
             else:
                 self.y += self.distance_to_go(1, "growing")
 
-            # else:
-            #     if (self.x, self.y) != points[1] and (self.x, self.y) != points[0]:
-            #         self.y += self.velocity * self.sim_data.time_step
-            #     else:
-            #         self.x -= self.velocity * self.sim_data.time_step
+    def moving_at_roundabout(self, road: int, points: list) -> None:
 
+        # Dojazd/po zjeździe z ronda
+        if (self.x > points[5][0] or self.x < points[5][0]) and points[5][1] in [240, 250]:  # jest przed punktami 2,6 lub za 1,5
+            points = [(290, 250), (310, 250), (290, 240), (310, 240)]
+            self.move(road, points, 0)
+            return None
+        
+        elif (road == 3 or road == 4) and points[5][1] < 235:  # jest przed punktem 4 lub za 3
+            points = [None, (310, 250), (295, 235), (305, 235)]
+            self.move(road, points, 0)
+            return None
+        
+        # Ruch na rondzie
+        
+        
     def turning_off_engine(self) -> None:
         """Method for turning off the car's engine"""
         self.started = False
 
 
-    def move(self, number_of_road: int, characteristic_points: list) -> None:
-        """Method used only in main.py"""
+    def move(self, number_of_road: int, characteristic_points: list, road_type: int) -> None:
+        """Method used only in main.py. If road_type = 0, intersection. If road_type = 1, roundabout"""
         if self.started:
-            # if True:
-            self.moving_forward(
-                number_of_road, characteristic_points)
-                # if (self.x, self.y) == characteristic_points[0]:
-                #     self.turning_left()
-                # elif (self.x, self.y) == characteristic_points[2]:
-                #     self.turning_right()
-
-            # else:
-            #     self.moving_forward(
-            #         number_of_road, characteristic_points)
+            if road_type == 0:
+                self.moving_forward(
+                    number_of_road, characteristic_points)
+            elif road_type == 1:
+                self.moving_at_roundabout(number_of_road, characteristic_points)
