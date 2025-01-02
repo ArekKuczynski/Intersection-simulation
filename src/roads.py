@@ -20,14 +20,15 @@ import math
 #
 #                  _____
 #               /        \
-#--------------1|         |6-------------
-#--------------2|         |5-------------
-#               \ ______ / 
+#--------------1|        C|6-------------
+#--------------2|A        |5-------------
+#               \ ____B_ / 
 #                   3 4
 #                   | |
 #                   | |
 # 1-6 to punkty charakterystyczne dla ronda ( tam gdzie rondo przecina się z drogą )
 
+# Obszary na rondzie A, B, C ^^
 class Roads():
     # Status 0 dla równorzędnego, 1 dla ronda
     def __init__(self, characteristic_points = None, status = 0):
@@ -77,16 +78,27 @@ class Roads():
     def get_area(self, position: tuple) -> int:
         x = position[0]
         y = position[1]
-        if (x > 295 and x < 300) and (y < 255 and y > 245):  # ZMIANA w pierwszym warunku z x=290 na x=295
-            return 1
-        if (x >= 300 and x < 310) and (y < 255 and y >= 245): 
-            return 2
-        if (x > 290 and x <= 300) and (y <= 245 and y >= 240):  # ZMIANA w drugim warunku z y=235 na y=240
-            return 3
-        if (x > 300 and x < 305) and (y < 245 and y > 235):  # ZMIANA w pierwszym warunku z x=310 na x=305
-            return 4
-        else:
-            return -1
+        if self.status == 0:
+            if (295 < x < 300) and (245 < y < 255):  
+                return 1
+            if ( 300 <= x < 310) and (245 <= y < 255): 
+                return 2
+            if (290 < x <= 300) and (240 <= y <= 245):  
+                return 3
+            if (300 < x < 305) and (235 < y < 245):  
+                return 4
+            else:
+                return -1
+        elif self.status == 1:
+            if ( 290 < x < 295 ) and ( 235 < y < 240 ):
+                return 1 # Obszar A
+            elif ( 300 < x < 305 ) and ( 230 < y < 235 ):
+                return 2 # Obszar B 
+            elif ( 310 < x < 315 ) and ( 245 < y < 250 ):
+                return 3 # Obszar C
+            else:
+                return -1
+            
 
     def in_circle(self, position):
         r2 = (5 * math.sqrt(5))**2
