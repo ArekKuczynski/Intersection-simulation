@@ -43,7 +43,7 @@ class Roads():
                 (295,240), # road_two x road_three
                 (305,240), # road_two x road_four
                 ]
-        if self.status == 1:
+        elif self.status == 1:
             self.characteristic_points = [
                 # Punkty charakterystyczne koła, jak wyżej 
                 #         vvvvvv
@@ -88,10 +88,15 @@ class Roads():
         else:
             return -1
 
-    
+    def in_circle(self, position):
+        r2 = (5 * math.sqrt(5))**2
+        result = (position[0] - 300)**2 + (position[1] - 245)**2
+        epsilon = 1
+        # print(position, abs(result - r2))
+        return abs(result - r2) < epsilon
+
     def get_road(self, position: tuple, end_point: tuple): # sprawdza na której jest drodze na podstawie współrzędnej
         # w sumie można to ustandaryzować dając za endpointy zmienne
-        position = (int(position[0]), int(position[1]))
         if self.status == 0: # Równorzędne
             if position not in self.characteristic_points:
                 if position[1] == 250:
@@ -137,13 +142,6 @@ class Roads():
                         return "Error" 
         
         if self.status == 1: # Rondo 
-            
-            def in_circle(self, position): # <-- nie mam pewności czy to będzie dobrze działać 
-                r2 = (5 * math.sqrt(5))**2
-                result = (position[0] - 300)**2 + (position[1] - 245)**2
-                epsilon = 1e-4
-                return abs(result - r2) < epsilon
-            
             if position not in self.characteristic_points:
                 if position[1] == 250:
                     return 1
@@ -153,8 +151,8 @@ class Roads():
                     return 3
                 elif position[0] == 305:
                     return 4
-                elif in_circle(position): # <-- nie mam pewności czy to będzie dobrze działać
-                    return 5  
+                elif self.in_circle(position):
+                    return 5
                 else:
                     return "Error"
             else:

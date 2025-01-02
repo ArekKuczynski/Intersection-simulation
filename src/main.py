@@ -101,7 +101,7 @@ if __name__ == "__main__":
             break
 
     sim_data = SimData(sim_mode)
-    roads = Roads(sim_mode)
+    roads = Roads(status = sim_mode)
 
     build_cars(cars_num, velocity, length)
 
