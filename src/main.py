@@ -25,7 +25,7 @@ def build_cars(cars_num: int, velocity: int, length: int) -> None:
         car = Car(f"C{num}",start_pos, end_point, velocity, length)
         sim_data.cars.append(car)
 
-def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
+def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf) -> None:
     src_dir = os.path.dirname(os.path.abspath(__file__))
     log_file_path = os.path.join(src_dir, "..", "logs.txt")
     log_file = open(log_file_path, "w")
@@ -40,10 +40,10 @@ def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
             if car.started == True:
                 curent_cars_pos.append((round(car.x, 2), round(car.y, 2)))
             road = roads.get_road((car.x, car.y), car.end_position)
-            print(f"\t-> car_id:{car.id}, road: {road}") if debug else 0
+            print(f'\t[car_id: \"{car.id}\"]:') if debug else 0
 
             car.start_engine(road)
-            print(f"car_engine: {car.started}")
+            print(f"- car_engine: {car.started}") if debug else 0
 
             area_list = [roads.get_area((c.x, c.y)) for c in sim_data.cars]
             for area in areas:
@@ -52,14 +52,15 @@ def simulation(time_step:int, debug = False, max_iter=math.inf) -> None:
             current_area = roads.get_area((car.x, car.y))
             if checking_preference(car, areas, current_area):
                 car.move(road, roads.characteristic_points)
-            print(f"car_id:{car.id}, pos: (x={car.x}, y={car.y}), end_point: {car.end_position}") if debug else 0
+            print(f"- pos: ({car.x}, {car.y}), end_point: {car.end_position}, current_road: {road}") if debug else 0
             
             if car.started == False and (car.x, car.y) != car.starting_position:
                 sim_data.cars.remove(car)
                 del(car)
 
-        print(f"area1: {areas[0].status}, area2: {areas[1].status}, area3: {areas[2].status}, area4: {areas[3].status}")
-        log_file.writelines(f"{iter}: {curent_cars_pos}\n")
+        print(f"\n[area1: {areas[0].status}, area2: {areas[1].status}, area3: {areas[2].status}, area4: {areas[3].status}]")
+        if save_logs:
+            log_file.writelines(f"{iter}: {curent_cars_pos}\n")
         if iter == max_iter:
             break
         iter += 1
@@ -71,16 +72,15 @@ if __name__ == "__main__":
     print("-- Podaj wartości początkowe: ---")
     cars_num = int(input("1. Podaj liczbe aut w symulacji: "))
     while True:
-        velocity = int(input("2. Prędkość samochodu: "))
-        if velocity > 9:
-            print("Prędkość nie może przekraczać 9 metrów na sekundę!")
+        velocity = int(input("2. Prędkość samochodów: "))
+        if velocity > 9: # więcej może powodować problemy
+            print("Prędkość nie może przekraczać 16 metrów na sekundę!")
         elif velocity < 2:
             print("Długość nie może być mniejsza niż 2 metry na sekundę!")
         else:
             break
-    
     while True:
-        length = int(input("3. Długość samochodu: "))
+        length = int(input("3. Długość samochodów: "))
         if length > 9:
             print("Długość nie może przekraczać 9 metrów!")
         elif length < 2:
@@ -95,5 +95,5 @@ if __name__ == "__main__":
 
     # Symulacja:
     sim_data.time_step = 0.5
-    simulation(sim_data.time_step, debug=True)
+    simulation(sim_data.time_step, save_logs=True, debug=True)
 

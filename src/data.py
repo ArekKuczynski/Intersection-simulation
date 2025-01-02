@@ -1,5 +1,5 @@
 class SimData(object):
-    '''Classic Singleton class containing global params'''
+    '''Classic Singleton class containing global params for simulation model'''
     _instance = None
     _cars = []
     _time_step = 1

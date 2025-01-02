@@ -30,10 +30,10 @@ import math
 
 class Roads():
     # Status 0 dla równorzędnego, 1 dla ronda
-    def __init__(self,characteristic_points = None, status=0):
-        self.characteristic_points = self.get_characteristic_points()
+    def __init__(self, characteristic_points = None, status = 0):
         self.status = status
-    
+        self.characteristic_points = self.get_characteristic_points()
+
     # automatyczne obliczanie punktów charakterystycznych
     def get_characteristic_points(self):
         if self.status == 0:
@@ -91,6 +91,7 @@ class Roads():
     
     def get_road(self, position: tuple, end_point: tuple): # sprawdza na której jest drodze na podstawie współrzędnej
         # w sumie można to ustandaryzować dając za endpointy zmienne
+        position = (int(position[0]), int(position[1]))
         if self.status == 0: # Równorzędne
             if position not in self.characteristic_points:
                 if position[1] == 250:
