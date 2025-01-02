@@ -70,6 +70,18 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
 
 if __name__ == "__main__":
     print("-- Podaj wartości początkowe: ---")
+    while True:
+        sim_mode: int
+        try:
+            sim_mode = int(input("Wybierz tryb symulacji: \n  - '0': Skrzyżowanie równorzędne \n  - '1': Rondo\nSymulacja: "))
+        except Exception as e:
+            print("Niepoprawny tryb symulacji. Spróbuj ponownie.")
+            continue
+        if sim_mode not in [0, 1]:
+            print("Niepoprawny tryb symulacji. Spróbuj ponownie.")
+        else:
+            break
+    
     cars_num = int(input("1. Podaj liczbe aut w symulacji: "))
     while True:
         velocity = int(input("2. Prędkość samochodów: "))
@@ -88,8 +100,8 @@ if __name__ == "__main__":
         else:
             break
 
-    sim_data = SimData()
-    roads = Roads()
+    sim_data = SimData(sim_mode)
+    roads = Roads(sim_mode)
 
     build_cars(cars_num, velocity, length)
 

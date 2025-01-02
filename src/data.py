@@ -1,14 +1,25 @@
 class SimData(object):
     '''Classic Singleton class containing global params for simulation model'''
     _instance = None
+    _sim_mode = None
     _cars = []
     _time_step = 1
     _areas = {1: False, 2: False, 3: False, 4: False}
 
-    def __new__(cls):
+    def __new__(cls, sim_mode = None):
         if not cls._instance:
+            if sim_mode != None:
+                cls._sim_mode = sim_mode
             cls._instance = super(SimData, cls).__new__(cls)
         return cls._instance
+
+    @property
+    def sim_mode(self):
+        return self._sim_mode
+
+    @sim_mode.setter
+    def sim_mode(self, value):
+        self._sim_mode = value
 
     @property
     def cars(self):
