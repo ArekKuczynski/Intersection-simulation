@@ -69,7 +69,7 @@ class Car():
 
     def is_counterclockwise(self, center: tuple, start_point: tuple, test_point: tuple) -> bool:
         """
-        Check if new point is counter-clockwise direction.
+        Check if new point is in counter-clockwise direction.
         """
         x_c, y_c = center
         x_start, y_start = start_point
@@ -83,8 +83,14 @@ class Car():
         return result
 
 
-    def distance_to_go(self, dimension: int, dim_values: str) -> float:
-        """Calculate how much can car move relative to the car in front."""
+    def distance_to_go(self, dimension: int | str, dim_values: str) -> float | tuple:
+        """
+        Calculate how much can car move relative to the car in front.
+        Possible dimensions: [0, 1, "circle"]
+        Possible dimenstion values: 
+        - for [0, 1] dimensions: ["growing", "decreases"],
+        - for "circle" dimension: "counter-clock"
+        """
         closest_car_in_front = None
         distance_to_car = math.inf
 
@@ -92,7 +98,7 @@ class Car():
         radius = math.sqrt(125)
 
         if dimension not in (0, 1, "circle"):
-            raise "zły wymiar!"
+            raise Exception("zły wymiar!")
 
         for car in self.sim_data.cars:
             if self.id == car.id:
@@ -109,7 +115,7 @@ class Car():
             elif dimension == "circle":
                 if self.x == car.x or self.y == car.y:
                     continue
-                distance = abs(car.y - self.y) + abs(car.x - self.x)
+                distance = math.sqrt((car.y - self.y)**2 + (car.x - self.x)**2)
 
             if dimension in (0, 1):
                 if dim_values == "growing" and (distance > 0 and distance < distance_to_car):
@@ -136,9 +142,9 @@ class Car():
             if int(self.velocity * self.sim_data.time_step) == self.velocity * self.sim_data.time_step:
                 random_offset = random.uniform(-0.3, 0.3)
             
-            distance_to_go = round(self.velocity * self.sim_data.time_step + random_offset, 2)
+            distance_to_go = self.velocity * self.sim_data.time_step + random_offset
             if dimension in (0, 1):
-                return distance_to_go
+                return round(distance_to_go, 2)
             elif dimension == "circle":
                 new_x, new_y = self.calculate_new_point_on_circle(center, radius, (self.x, self.y), distance_to_go)
                 return round(new_x - self.x, 2), round(new_y - self.y, 2)
@@ -151,15 +157,15 @@ class Car():
                 return 0, 0
         # zbliż się do cara (jest z przodu, ale jesteś w stanie podjechać):
         else:
-            distance_to_go = round(distance_to_car - (trace + self.length / 2), 2)
+            distance_to_go = distance_to_car - (trace + self.length / 2)
             if dimension in (0, 1):
-                return distance_to_go
+                return round(distance_to_go, 2)
             elif dimension == "circle":
-                return 0, 0     # DO ZROBIENIA JESZCZE!!!!
+                return 0, 0     # DO ZROBIENIA JESZCZE!!!! (lub nie: to jest detal)
 
 
     def moving_forward(self, road: int, points: list) -> None:
-        """Method for moving forward. Don't use in main.py"""
+        """Method for moving forward in intersection simulation mode. Don't use in main.py"""
         if road == 1:
             if self.x <= self.end_position[0]:
                 self.turning_off_engine()
@@ -210,7 +216,7 @@ class Car():
 
 
     def moving_at_roundabout(self, road: int, points: list) -> None:
-
+        """Method for moving forward in roundabout simulation mode. Don't use in main.py"""
         # Dojazd/po zjeździe z ronda
         # if (self.x > points[5][0] or self.x < points[0][0]) and points[5][1] in [240, 250]:  # jest przed punktami 2,6 lub za 1,5
         #     points = [(290, 250), (310, 250), (290, 240), (310, 240)]
@@ -256,7 +262,7 @@ class Car():
             else:
                 self.y -= self.distance_to_go(1, "decreases")
 
-        elif road == 4:  # brak możliwości wyłączenia silnika, ponieważ koniec jest na przecięciu dróg
+        elif road == 4:
             if (self.y + self.velocity * self.sim_data.time_step > points[3][1]) and (self.y < points[3][1]):
                 self.x, self.y = points[3]
             elif (self.y + self.velocity * self.sim_data.time_step > points[3][1] - 5) and (self.y < points[3][1] - 5):

@@ -32,13 +32,15 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
 
     iter = 0
     areas = [Area(a) for a in range(1, 5)] # DODANA LISTA OBSZARÓW
+    last_current_cars_pos = None
+    is_simulation_stalled = 0
     while len(sim_data.cars) != 0:
         print(f"\n\n\n=== ITER:{iter} ===")
-        curent_cars_pos = []
+        current_cars_pos = []
 
         for car in sim_data.cars:
             if car.started == True:
-                curent_cars_pos.append((round(car.x, 2), round(car.y, 2)))
+                current_cars_pos.append((round(car.x, 2), round(car.y, 2)))
             road = roads.get_road((car.x, car.y), car.end_position)
             print(f'\t[car_id: \"{car.id}\"]:') if debug else 0
 
@@ -58,18 +60,28 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
                 sim_data.cars.remove(car)
                 del(car)
 
-        print(f"\n[area1: {areas[0].status}, area2: {areas[1].status}, area3: {areas[2].status}, area4: {areas[3].status}]")
+        if debug and sim_mode == 0:
+            print(f"\n[area1: {areas[0].status}, area2: {areas[1].status}, area3: {areas[2].status}, area4: {areas[3].status}]")
         if save_logs:
-            log_file.writelines(f"{iter}: {curent_cars_pos}\n")
+            log_file.writelines(f"{iter}: {current_cars_pos}\n")
+
         if iter == max_iter:
             break
+        if current_cars_pos == last_current_cars_pos:
+            is_simulation_stalled += 1
+        else:
+            is_simulation_stalled = 0
+        if is_simulation_stalled > 9:
+            raise Exception(f"Simulation stalled at {iter} iteration, after {is_simulation_stalled} iterations!")
+
+        last_current_cars_pos = current_cars_pos
         iter += 1
         time.sleep(time_step)
     
     log_file.close()
 
 if __name__ == "__main__":
-    print("-- Podaj wartości początkowe: ---")
+    print("--- Podaj wartości początkowe: ---")
     while True:
         sim_mode: int
         try:
@@ -105,7 +117,6 @@ if __name__ == "__main__":
 
     build_cars(cars_num, velocity, length)
 
-    # Symulacja:
-    sim_data.time_step = 0.5
+    sim_data.time_step = 0.5 # in seconds
     simulation(sim_data.time_step, save_logs=True, debug=True)
 
