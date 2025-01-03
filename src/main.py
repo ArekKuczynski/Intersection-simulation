@@ -79,6 +79,8 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
         time.sleep(time_step)
     
     log_file.close()
+    print("\n\n\n--- Wyniki: ---")
+    print(f"Tryb symulacji: {sim_mode} \nIteracji: {iter} \nPrędkość samochodów: {velocity} \nDługość samochodów: {length}")
 
 if __name__ == "__main__":
     print("--- Podaj wartości początkowe: ---")
