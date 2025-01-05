@@ -78,11 +78,12 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
 
         last_current_cars_pos = current_cars_pos
         iter += 1
-        time.sleep(time_step)
+        # time.sleep(time_step) # REAL TIME DISABLED/ENABLED?
     
     log_file.close()
     print("\n\n\n--- Wyniki: ---")
-    print(f"Tryb symulacji: {sim_mode} \nIteracji: {iter} \nPrędkość samochodów: {velocity} \nDługość samochodów: {length}")
+    print(f"Tryb symulacji: {sim_mode} \nIteracji: {iter} \nLiczba samochodód {cars_num}")
+    print(f"Prędkość samochodów: {velocity} \nDługość samochodów: {length}")
 
 if __name__ == "__main__":
     print("--- Podaj wartości początkowe: ---")
@@ -122,5 +123,5 @@ if __name__ == "__main__":
     build_cars(cars_num, velocity, length)
 
     sim_data.time_step = 0.5 # in seconds
-    simulation(sim_data.time_step, save_logs=True, debug=True)
+    simulation(sim_data.time_step, save_logs=True, debug=False)
 

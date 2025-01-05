@@ -122,7 +122,13 @@ class Car():
             elif dimension == "circle":
                 if not self.in_circle((car.x, car.y)):
                     continue
-                distance = math.sqrt((car.y - self.y)**2 + (car.x - self.x)**2) - 1 # -1 bo tak nie wiem dziwny blad
+                theta1 = math.atan2(car.y - center[1], car.x - center[0])
+                theta2 = math.atan2(self.y - center[1], self.x - center[0])
+                delta_theta = abs(theta2 - theta1)
+                if delta_theta > math.pi:
+                    delta_theta = 2 * math.pi - delta_theta
+                distance = radius * delta_theta
+                # OLD: distance = math.sqrt((car.y - self.y)**2 + (car.x - self.x)**2) + 9 # +2 bo tak nie wiem dziwny blad
             else:
                 distance = math.inf
 
@@ -245,7 +251,7 @@ class Car():
 
             if (self.x - self.velocity * self.sim_data.time_step < points[5][0]) and (self.x > points[5][0]):
                 self.x, self.y = points[5]
-            elif (self.x + self.velocity * self.sim_data.time_step < points[5][0] + 5) and (self.x > points[5][0] + 5):
+            elif (self.x - self.velocity * self.sim_data.time_step < points[5][0] + 5) and (self.x > points[5][0] + 5):
                 self.x, self.y = points[5][0] + 5, points[5][1]
             else:
                 self.x -= self.distance_to_go(0, "decreases")

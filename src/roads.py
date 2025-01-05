@@ -90,12 +90,13 @@ class Roads():
             else:
                 return -1
         elif self.status == 1:
-            offset = 6 # max 6? (wydłużanie obszaru na rondzie)
-            if ( 287 < x < 290 + 2.5 ) and ( 240 < y < 245 + offset ): # 287 ~= 300 - sqrt(125) [zawyżone]
+            offset = 6 # max 4.99? (wydłużanie obszaru na rondzie)
+            offset_2 = 3
+            if ( 287 < x < 290 + offset_2 ) and ( 240 < y < 245 + offset ): # 287 ~= 300 - sqrt(125) [zawyżone]
                 return 1 # Obszar A
-            elif ( 300 - offset < x < 305 ) and ( 233 < y < 235 + 2.5 ): # 233 ~= 245 - sqrt(125) [zawyżone]
+            elif ( 300 - offset < x < 305 ) and ( 233 < y < 235 + offset_2 ): # 233 ~= 245 - sqrt(125) [zawyżone]
                 return 2 # Obszar B 
-            elif ( 310 - 2.5 < x < 313 ) and ( 245 - offset < y < 250 ): # 313 ~= 300 + sqrt(125) [zawyżone]
+            elif ( 310 - offset_2 < x < 313 ) and ( 245 - offset < y < 250 ): # 313 ~= 300 + sqrt(125) [zawyżone]
                 return 3 # Obszar C
             else:
                 return -1
