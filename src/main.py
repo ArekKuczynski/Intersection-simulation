@@ -62,6 +62,8 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
 
         if debug and sim_mode == 0:
             print(f"\n[area1: {areas[0].status}, area2: {areas[1].status}, area3: {areas[2].status}, area4: {areas[3].status}]")
+        elif debug and sim_mode == 1:
+            print(f"\n[area A: {areas[0].status}, area B: {areas[1].status}, area C: {areas[2].status}]")
         if save_logs:
             log_file.writelines(f"{iter}: {current_cars_pos}\n")
 

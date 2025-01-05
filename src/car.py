@@ -83,6 +83,13 @@ class Car():
         return result
 
 
+    def in_circle(self, position):
+        r2 = (5 * math.sqrt(5))**2
+        result = (position[0] - 300)**2 + (position[1] - 245)**2
+        epsilon = 1
+        return abs(result - r2) < epsilon
+
+
     def distance_to_go(self, dimension: int | str, dim_values: str) -> float | tuple:
         """
         Calculate how much can car move relative to the car in front.
@@ -113,9 +120,11 @@ class Car():
                     continue
                 distance = car.y - self.y
             elif dimension == "circle":
-                if self.x == car.x or self.y == car.y:
+                if not self.in_circle((car.x, car.y)):
                     continue
-                distance = math.sqrt((car.y - self.y)**2 + (car.x - self.x)**2)
+                distance = math.sqrt((car.y - self.y)**2 + (car.x - self.x)**2) - 1 # -1 bo tak nie wiem dziwny blad
+            else:
+                distance = math.inf
 
             if dimension in (0, 1):
                 if dim_values == "growing" and (distance > 0 and distance < distance_to_car):
@@ -154,14 +163,15 @@ class Car():
             if dimension in (0, 1):
                 return distance_to_go
             elif dimension == "circle":
-                return 0, 0
+                return distance_to_go, distance_to_go
         # zbliż się do cara (jest z przodu, ale jesteś w stanie podjechać):
         else:
             distance_to_go = distance_to_car - (trace + self.length / 2)
             if dimension in (0, 1):
                 return round(distance_to_go, 2)
             elif dimension == "circle":
-                return 0, 0     # DO ZROBIENIA JESZCZE!!!! (lub nie: to jest detal)
+                new_x, new_y = self.calculate_new_point_on_circle(center, radius, (self.x, self.y), distance_to_go)
+                return round(new_x - self.x, 2), round(new_y - self.y, 2)
 
 
     def moving_forward(self, road: int, points: list) -> None:

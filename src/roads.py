@@ -90,11 +90,12 @@ class Roads():
             else:
                 return -1
         elif self.status == 1:
-            if ( 290 < x < 295 ) and ( 235 < y < 240 ):
+            offset = 6 # max 6? (wydłużanie obszaru na rondzie)
+            if ( 287 < x < 290 + 2.5 ) and ( 240 < y < 245 + offset ): # 287 ~= 300 - sqrt(125) [zawyżone]
                 return 1 # Obszar A
-            elif ( 300 < x < 305 ) and ( 230 < y < 235 ):
+            elif ( 300 - offset < x < 305 ) and ( 233 < y < 235 + 2.5 ): # 233 ~= 245 - sqrt(125) [zawyżone]
                 return 2 # Obszar B 
-            elif ( 310 < x < 315 ) and ( 245 < y < 250 ):
+            elif ( 310 - 2.5 < x < 313 ) and ( 245 - offset < y < 250 ): # 313 ~= 300 + sqrt(125) [zawyżone]
                 return 3 # Obszar C
             else:
                 return -1
@@ -104,7 +105,6 @@ class Roads():
         r2 = (5 * math.sqrt(5))**2
         result = (position[0] - 300)**2 + (position[1] - 245)**2
         epsilon = 1
-        # print(position, abs(result - r2))
         return abs(result - r2) < epsilon
 
     def get_road(self, position: tuple, end_point: tuple): # sprawdza na której jest drodze na podstawie współrzędnej

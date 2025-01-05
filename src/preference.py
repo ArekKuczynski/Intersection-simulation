@@ -78,19 +78,19 @@ def roundabout_preference(current_car, areas, current_area, road):
     if current_area == -1:
         if (current_car.x, current_car.y) == stop_points[0]:  # A
             if areas[0].get_status() == 0:
-                current_car.x, current_car.y = 289, 240
+                #current_car.x, current_car.y = 289, 240
                 return True
             else:
                 return False
         elif (current_car.x, current_car.y) == stop_points[1]:  # B
             if areas[1].get_status() == 0:
-                current_car.x, current_car.y = 305, 234
+                #current_car.x, current_car.y = 305, 234
                 return True
             else:
                 return False
         elif (current_car.x, current_car.y) == stop_points[2]:  # C
             if areas[2].get_status() == 0:
-                current_car.x, current_car.y = 309, 250
+                #current_car.x, current_car.y = 309, 250
                 return True
             else:
                 return False
