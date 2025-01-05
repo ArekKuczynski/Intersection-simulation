@@ -52,7 +52,7 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
                 area.check_status(area_list)
 
             current_area = roads.get_area((car.x, car.y))
-            if checking_preference(car, areas, current_area):
+            if checking_preference(car, areas, current_area, road, sim_mode):
                 car.move(road, roads.characteristic_points)
             print(f"- pos: ({car.x}, {car.y}), end_point: {car.end_position}, current_road: {road}") if debug else 0
             
