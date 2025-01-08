@@ -22,13 +22,14 @@ def build_cars(cars_num: int, velocity: int, length: int) -> None:
         start_pos = roads.get_start_points(rand_road)
         end_point = roads.get_end_points(rand_endpoints,start_pos)
 
-        car = Car(f"C{num}",start_pos, end_point, velocity, length)
+        car = Car(f"C{num}", start_pos, end_point, velocity, length)
         sim_data.cars.append(car)
 
 def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf) -> None:
     src_dir = os.path.dirname(os.path.abspath(__file__))
     log_file_path = os.path.join(src_dir, "..", "logs.txt")
     log_file = open(log_file_path, "w")
+    log_file.writelines(f"sim_mode: {sim_mode}\n")
 
     iter = 0
     areas = [Area(a) for a in range(1, 5)] # DODANA LISTA OBSZARÓW
@@ -83,7 +84,7 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
     log_file.close()
     print("\n\n\n--- Wyniki: ---")
     print(f"Tryb symulacji: {sim_mode} \nIteracji: {iter} \nLiczba samochodód {cars_num}")
-    print(f"Prędkość samochodów: {velocity} \nDługość samochodów: {length}")
+    print(f"Prędkość samochodów (m/s): {velocity} \nDługość samochodów (m): {length}")
 
 if __name__ == "__main__":
     print("--- Podaj wartości początkowe: ---")
@@ -101,7 +102,7 @@ if __name__ == "__main__":
     
     cars_num = int(input("1. Podaj liczbe aut w symulacji: "))
     while True:
-        velocity = int(input("2. Prędkość samochodów: "))
+        velocity = float(input("2. Prędkość samochodów (m/s): "))
         if velocity > 9: # więcej może powodować problemy
             print("Prędkość nie może przekraczać 9 metrów na sekundę!")
         elif velocity < 2:
@@ -109,7 +110,7 @@ if __name__ == "__main__":
         else:
             break
     while True:
-        length = int(input("3. Długość samochodów: "))
+        length = float(input("3. Długość samochodów (m): "))
         if length > 9:
             print("Długość nie może przekraczać 9 metrów!")
         elif length < 2:

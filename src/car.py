@@ -94,7 +94,7 @@ class Car():
         """
         Calculate how much can car move relative to the car in front.
         Possible dimensions: [0, 1, "circle"]
-        Possible dimenstion values: 
+        Possible dimension values: 
         - for [0, 1] dimensions: ["growing", "decreases"],
         - for "circle" dimension: "counter-clock"
         """

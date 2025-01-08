@@ -1,13 +1,17 @@
 import matplotlib.pyplot as plt
 import numpy as np
 
-def visualization(file_path,status = 0):
+def visualization(file_path, status = None):
     with open(file_path, 'r') as file:
         lines = file.readlines()
 
     iterations = []
-    for line in lines:
+    for i, line in enumerate(lines):
         iter_num, values = line.strip().split(': ')
+        if i == 0:
+            if status == None:
+                status = int(values)
+            continue
         points = eval(values)
         iterations.append(points)
 
@@ -44,4 +48,4 @@ def visualization(file_path,status = 0):
     plt.show()
         
 
-visualization('logs.txt',1)
+visualization('logs.txt')

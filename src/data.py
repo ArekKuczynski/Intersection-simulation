@@ -3,7 +3,7 @@ class SimData(object):
     _instance = None
     _sim_mode = None
     _cars = []
-    _time_step = 1
+    _time_step = 0.5
 
     def __new__(cls, sim_mode = None):
         if not cls._instance:
