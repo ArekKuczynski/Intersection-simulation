@@ -103,7 +103,7 @@ if __name__ == "__main__":
     while True:
         velocity = int(input("2. Prędkość samochodów: "))
         if velocity > 9: # więcej może powodować problemy
-            print("Prędkość nie może przekraczać 16 metrów na sekundę!")
+            print("Prędkość nie może przekraczać 9 metrów na sekundę!")
         elif velocity < 2:
             print("Długość nie może być mniejsza niż 2 metry na sekundę!")
         else:

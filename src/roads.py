@@ -171,9 +171,9 @@ class Roads():
             else:
                 if position == (290,250) and end_point == (0,250): # Punkt charakterystyczny 1
                         return 1
-                elif position == (295,235) and end_point == (295,0): # Punkt charakterystyczny 2
+                elif position == (295,235) and end_point == (295,0): # Punkt charakterystyczny 3
                         return 3
-                elif position == (310,240) and end_point == (600,240): # Punkt charakterystyczny 3
+                elif position == (310,240) and end_point == (600,240): # Punkt charakterystyczny 5
                         return 2
                 else:
                     return 5
