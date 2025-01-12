@@ -32,7 +32,10 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
     log_file.writelines(f"sim_mode: {sim_mode}\n")
 
     iter = 0
-    areas = [Area(a) for a in range(1, 5)] # DODANA LISTA OBSZARÓW
+    if sim_mode == 0:  # DODANA LISTA OBSZARÓW
+        areas = [Area(a) for a in range(1, 8)]
+    else:
+        areas = [Area(a) for a in range(1, 4)]
     last_current_cars_pos = None
     is_simulation_stalled = 0
     while len(sim_data.cars) != 0:

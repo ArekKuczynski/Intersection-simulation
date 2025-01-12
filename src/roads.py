@@ -79,13 +79,19 @@ class Roads():
         x = position[0]
         y = position[1]
         if self.status == 0:
-            if (295 < x < 300) and (245 < y < 255):  
+            if x == 305 and y == 250:
+                return 5
+            elif x == 295 and y == 240:
+                return 6
+            elif x == 305 and y == 240:
+                return 7            
+            elif (295 < x < 300) and (245 < y <= 250):  
                 return 1
-            if ( 300 <= x < 310) and (245 <= y < 255): 
+            elif ( 300 <= x < 310) and (245 <= y <= 250): 
                 return 2
-            if (290 < x <= 300) and (240 <= y <= 245):  
+            elif (290 < x <= 300) and (240 <= y <= 245):  
                 return 3
-            if (300 < x < 305) and (235 < y < 245):  
+            elif (300 < x < 305) and (235 < y < 245):  
                 return 4
             else:
                 return -1
