@@ -88,6 +88,7 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
     print("\n\n\n--- Wyniki: ---")
     print(f"Tryb symulacji: {sim_mode} \nIteracji: {iter} \nLiczba samochodód {cars_num}")
     print(f"Prędkość samochodów (m/s): {velocity} \nDługość samochodów (m): {length}")
+    print(f"{iter}")
 
 if __name__ == "__main__":
     print("--- Podaj wartości początkowe: ---")
