@@ -43,7 +43,8 @@ def grid_search_simulation():
                         "Cars": car,
                         "Velocity": velocity,
                         "Length": length,
-                        "Iter": iter
+                        "Iter": iter,
+                        "efficiency": round(int(car)/int(iter),2)
                     }
                     results.append(result)
 
