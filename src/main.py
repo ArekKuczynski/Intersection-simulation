@@ -25,7 +25,8 @@ def build_cars(cars_num: int, velocity: int, length: int) -> None:
         car = Car(f"C{num}", start_pos, end_point, velocity, length)
         sim_data.cars.append(car)
 
-def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf) -> None:
+def simulation(time_step:int, save_logs = True, debug = False, max_iter=1000000) -> None: 
+    start_time = time.time()
     src_dir = os.path.dirname(os.path.abspath(__file__))
     log_file_path = os.path.join(src_dir, "..", "logs.txt")
     log_file = open(log_file_path, "w")
@@ -79,7 +80,6 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
             is_simulation_stalled = 0
         if is_simulation_stalled > 9:
             raise Exception(f"Simulation stalled at {iter} iteration, after {is_simulation_stalled} iterations!")
-
         last_current_cars_pos = current_cars_pos
         iter += 1
         # time.sleep(time_step) # REAL TIME DISABLED/ENABLED?
@@ -88,6 +88,7 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=math.inf
     print("\n\n\n--- Wyniki: ---")
     print(f"Tryb symulacji: {sim_mode} \nIteracji: {iter} \nLiczba samochodód {cars_num}")
     print(f"Prędkość samochodów (m/s): {velocity} \nDługość samochodów (m): {length}")
+    print(f"{time.time() - start_time}")
     print(f"{iter}") # eksploration.py pobiera tą linikę, można to inaczej rozwiązać ale czasu nie miałem 
 
 if __name__ == "__main__":

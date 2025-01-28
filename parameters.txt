@@ -1,6 +1,6 @@
 {
-    "car_values": [50,75,100],
+    "car_values": [50],
     "type_values": [0, 1],
-    "velocity_values": [5],
+    "velocity_values": [5,8],
     "length_values": [3]
 }
