@@ -51,14 +51,24 @@ def grid_search_simulation():
                         print(f"================================== Parametry próby {n} ==================================")
                         
                         if error == 0:
-                            result = {
-                                "Type": type,
-                                "Cars": car,
-                                "Velocity": velocity,
-                                "Length": length,
-                                "Iter": iter,
-                                "Efficiency": round(int(car)/int(iter),2)
-                            }
+                            try:
+                                result = {
+                                    "Type": type,
+                                    "Cars": car,
+                                    "Velocity": velocity,
+                                    "Length": length,
+                                    "Iter": iter,
+                                    "Efficiency": round(int(car)/int(iter),2)
+                                }
+                            except:
+                                result = {
+                                    "Type": type,
+                                    "Cars": car,
+                                    "Velocity": velocity,
+                                    "Length": length,
+                                    "Iter": "None",
+                                    "Efficiency": "None"
+                                }
                             results.append(result)
                         else:
                             print(f"Simulation stalled at {iter} iteration, after {10} iterations!")

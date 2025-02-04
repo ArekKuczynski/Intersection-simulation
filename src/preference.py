@@ -11,17 +11,23 @@ def intersection_preference(current_car, areas: list, current_area: int):
     stop_points = [(310, 250), (290, 240), (305, 235)]
     if current_area == -1 or current_area >= 5: #current_area == -1:  # Samochód nie jest przy skrzyżowaniu, może jechać dalej
         if (current_car.x, current_car.y) == stop_points[0]:
-            if areas[1].get_status() == 0:
+            if areas[1].get_status() == 0 and areas[0].get_status() == 0:
                 return True
             else:
                 return False
         elif (current_car.x, current_car.y) == stop_points[1]:
-            if areas[2].get_status() == 0:
+            if current_car.y == current_car.end_position[1]:  # nie skręca
+                if areas[2].get_status() == 0 and areas[3].get_status() == 0:
+                    return True
+            elif areas[2].get_status() == 0:
                 return True
             else:
                 return False
         elif (current_car.x, current_car.y) == stop_points[2]:
-            if areas[3].get_status() == 0:
+            if current_car.y == current_car.end_position[1]:  # nie skręca
+                if areas[3].get_status() == 0 and areas[1].get_status() == 0:
+                    return True
+            elif areas[3].get_status() == 0:
                 return True
             else:
                 return False

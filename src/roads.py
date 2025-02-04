@@ -65,7 +65,7 @@ class Roads():
         elif start_point == (305,0):
             end_point = [(0,250),(600,240)][number]
         return end_point
-    
+
     def get_start_points(self, number: int):
         if number == 1: 
             start_point = (600,250)  # road_one
@@ -74,7 +74,7 @@ class Roads():
         elif number == 3:
             start_point = (305,0)  # road_four
         return start_point
-    
+
     def get_area(self, position: tuple) -> int:
         x = position[0]
         y = position[1]
@@ -84,14 +84,14 @@ class Roads():
             elif x == 295 and y == 240:
                 return 6
             elif x == 305 and y == 240:
-                return 7            
-            elif (295 < x < 300) and (245 < y <= 250):  
+                return 7
+            elif (295 < x < 300) and (245 < y <= 250):
                 return 1
-            elif ( 300 <= x < 310) and (245 <= y <= 250): 
+            elif ( 300 <= x < 310) and (245 <= y <= 250):
                 return 2
-            elif (290 < x <= 300) and (240 <= y <= 245):  
+            elif (290 < x <= 300) and (240 <= y <= 245):
                 return 3
-            elif (300 < x < 305) and (235 < y < 245):  
+            elif (300 < x < 305) and (235 < y < 245):
                 return 4
             else:
                 return -1
@@ -106,7 +106,6 @@ class Roads():
                 return 3 # Obszar C
             else:
                 return -1
-            
 
     def in_circle(self, position):
         r2 = (5 * math.sqrt(5))**2

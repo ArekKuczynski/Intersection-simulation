@@ -150,13 +150,11 @@ class Car():
         else:
             trace = 0
 
-
+        random_offset = 0
+        if int(self.velocity * self.sim_data.time_step) == self.velocity * self.sim_data.time_step:
+            random_offset = random.uniform(0, 0.3)
         # wykonaj pełny ruch (nie ma auta w predykowanym ruchu):
         if ((distance_to_car - trace) > (self.velocity * self.sim_data.time_step + (self.length / 2))) or closest_car_in_front == None:
-            random_offset = 0
-            if int(self.velocity * self.sim_data.time_step) == self.velocity * self.sim_data.time_step:
-                random_offset = random.uniform(-0.3, 0.3)
-            
             distance_to_go = self.velocity * self.sim_data.time_step + random_offset
             if dimension in (0, 1):
                 return round(distance_to_go, 2)
@@ -172,7 +170,7 @@ class Car():
                 return distance_to_go, distance_to_go
         # zbliż się do cara (jest z przodu, ale jesteś w stanie podjechać):
         else:
-            distance_to_go = distance_to_car - (trace + self.length / 2)
+            distance_to_go = distance_to_car - (trace + self.length / 2) + random_offset
             if dimension in (0, 1):
                 return round(distance_to_go, 2)
             elif dimension == "circle":
@@ -180,12 +178,14 @@ class Car():
                 return round(new_x - self.x, 2), round(new_y - self.y, 2)
 
 
-    def moving_forward(self, road: int, points: list) -> None:
+    def moving_forward(self, road: int, points: list, force_move: bool) -> None:
         """Method for moving forward in intersection simulation mode. Don't use in main.py"""
         if road == 1:
             if self.x <= self.end_position[0]:
                 self.turning_off_engine()
                 return None
+            if force_move == True:
+                self.x -= self.distance_to_go(0, "decreases")
 
             if (self.x - self.velocity * self.sim_data.time_step < points[0][0]) and (self.x > points[0][0]):
                 self.x, self.y = points[0]
@@ -200,6 +200,8 @@ class Car():
             if self.x >= self.end_position[0]:
                 self.turning_off_engine()
                 return None
+            if force_move == True:
+                self.x += self.distance_to_go(0, "growing")
 
             if (self.x + self.velocity * self.sim_data.time_step > points[3][0]) and (self.x < points[3][0]):
                 self.x, self.y = points[3]
@@ -214,6 +216,8 @@ class Car():
             if self.y <= self.end_position[1]:
                 self.turning_off_engine()
                 return None
+            if force_move == True:
+                self.y -= self.distance_to_go(1, "decreases")
 
             if (self.y - self.velocity * self.sim_data.time_step < points[2][1]) and (self.y > points[2][1]):
                 self.x, self.y = points[2]
@@ -221,6 +225,9 @@ class Car():
                 self.y -= self.distance_to_go(1, "decreases")
 
         elif road == 4:  # brak możliwości wyłączenia silnika, ponieważ koniec jest na przecięciu dróg
+            if force_move == True:
+                self.y += self.distance_to_go(1, "growing")
+
             if (self.y + self.velocity * self.sim_data.time_step > points[1][1]) and (self.y < points[1][1]):
                 self.x, self.y = points[1]
             elif (self.y + self.velocity * self.sim_data.time_step > points[3][1]) and (self.y < points[3][1]):
@@ -307,10 +314,10 @@ class Car():
         self.started = False
 
 
-    def move(self, number_of_road: int, characteristic_points: list) -> None:
+    def move(self, number_of_road: int, characteristic_points: list, force_move: bool) -> None:
         """Method used only in main.py. If road_type = 0, intersection. If road_type = 1, roundabout"""
         if self.started:
             if self.sim_data.sim_mode == 0:
-                self.moving_forward(number_of_road, characteristic_points)
+                self.moving_forward(number_of_road, characteristic_points, force_move)
             elif self.sim_data.sim_mode == 1:
                 self.moving_at_roundabout(number_of_road, characteristic_points)

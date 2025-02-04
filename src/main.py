@@ -43,6 +43,7 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=1000000)
         print(f"\n\n\n=== ITER:{iter} ===")
         current_cars_pos = []
 
+        force_move = False
         for car in sim_data.cars:
             if car.started == True:
                 current_cars_pos.append((round(car.x, 2), round(car.y, 2)))
@@ -56,11 +57,28 @@ def simulation(time_step:int, save_logs = True, debug = False, max_iter=1000000)
             for area in areas:
                 area.check_status(area_list)
 
+            #unstaller:
+            if is_simulation_stalled > 3:
+                force_move = True
+            if sim_mode == 0:
+                one_count = 0
+                for i in range(4, 7):
+                    if areas[i].status == 1:
+                        one_count += 1
+                if one_count >= 2:
+                    #force_move = True
+                    for i in range(4, 7):
+                        areas[i].status = 0
+                    #is_simulation_stalled = 0
+
             current_area = roads.get_area((car.x, car.y))
             if checking_preference(car, areas, current_area, road, sim_mode):
-                car.move(road, roads.characteristic_points)
+                car.move(road, roads.characteristic_points, force_move)
             print(f"- pos: ({car.x}, {car.y}), end_point: {car.end_position}, current_road: {road}") if debug else 0
             
+            if car.x > 1000 or car.y > 1000:
+                print(f"- pos: ({car.x}, {car.y}), end_point: {car.end_position}, current_road: {road}")
+                raise Exception(f"Car went out of area.")
             if car.started == False and (car.x, car.y) != car.starting_position:
                 sim_data.cars.remove(car)
                 del(car)
